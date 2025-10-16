@@ -1,0 +1,45 @@
+[project]
+name = "nd-bootstrap"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "pyyaml>=6.0.3",
+    "requests>=2.32.5",
+    "urllib3>=2.5.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black>=24.0.0",
+    "isort>=5.13.0",
+    "pylint>=3.0.0",
+    "mypy>=1.8.0",
+    "types-pyyaml>=6.0.0",
+    "types-requests>=2.31.0",
+]
+
+[tool.black]
+line-length = 180
+target-version = ["py313"]
+
+[tool.isort]
+profile = "black"
+line_length = 180
+
+[tool.pylint.format]
+max-line-length = 180
+
+[tool.pylint.messages_control]
+disable = [
+    "too-many-instance-attributes",
+    "line-too-long",
+]
+
+[tool.mypy]
+python_version = "3.13"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+check_untyped_defs = true
