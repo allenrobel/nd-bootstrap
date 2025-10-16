@@ -54,7 +54,7 @@ uv sync --extra dev
 
 Note, the example file (`nd_bootstrap_vnode.yaml`) is tailored to Nexus Dashboard running under KVM
 (aka vNd/KVM).  We will include example configuration files for physical Nexus Dashboard appliances
-(pNd) and pNd running under VMWare once these have been tested.
+(pNd) and vNd running under VMWare once these have been tested.
 
 ### 2. Set the environment variables as shown below
 
