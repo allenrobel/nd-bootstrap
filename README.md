@@ -10,6 +10,8 @@ Bootstrap a Nexus Dashboard cluster.
   - Easier to integrate with CI/CD pipelines and secret management systems
   - Easier to use with shell scripts and automation tools
 - Loads and validates a YAML configuration file
+  - Separation of config from code
+  - Create unique config file for each Nexus Dashboard setup
 - Validates NTP servers are reachable and compatible from Nexus Dashboard's perspective prior to POST
 - Retrieves node credentials from environment variables and dynamically updates the node configurations prior to POST
   - More secure and flexible than hardcoding credentials in the configuration file
