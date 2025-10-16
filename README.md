@@ -26,7 +26,7 @@ Bootstrap a Nexus Dashboard cluster.
 
 ## Environment Variables
 
-The following environment variobles define the connectivity parameters when connecting to Nexus Dashboard.
+The following environment variables define the connectivity parameters when connecting to Nexus Dashboard.
 
 - ND_IP4: The IPv4 address of the Nexus Dashboard
 - ND_IP6: The IPv6 address of the Nexus Dashboard
