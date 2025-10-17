@@ -37,6 +37,15 @@ disable = [
     "line-too-long",
 ]
 
+# For CI/CD environments where dependencies may not be installed
+[tool.pylint.'TYPECHECK']
+ignored-modules = ["requests", "urllib3", "yaml"]
+extension-pkg-allow-list = ["pyyaml"]
+
+[tool.pylint.'MASTER']
+# Ensure pylint can find the package modules
+init-hook = 'import sys; sys.path.append(".")'
+
 [tool.mypy]
 python_version = "3.13"
 warn_return_any = true
