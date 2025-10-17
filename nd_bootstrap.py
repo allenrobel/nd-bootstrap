@@ -445,8 +445,8 @@ class NdNtpServersValidate:
 
     ## Properties
 
-    - auth_cookie: (getter/setter) The authentication cookie dictionary.
     - config: (getter/setter) The configuration dictionary containing clusterConfig.ntpConfig.servers
+    - session: (getter/setter) The requests.Session object instance with authentication cookies set
 
     ## Usage
 
