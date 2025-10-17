@@ -178,21 +178,20 @@ class NdBootstrap:
             msg += f"Error detail: {str(e)}"
             print(msg)
             return
+        if response.status_code == 405:
+            msg = f"{self.class_name}.{method_name}: "
+            msg += "Bootstrap configuration already sent. Returning..."
+            print(msg)
+            return
         if response.status_code in (200, 201):
             msg = f"{self.class_name}.{method_name}: "
             msg += "Cluster bootstrap initiated successfully.\n"
             msg += f"Response: {response.text}"
             print(msg)
             return
-        else:
-            if response.status_code == 405:
-                msg = f"{self.class_name}.{method_name}: "
-                msg += "Bootstrap configuration already sent. Returning..."
-                print(msg)
-                return
-            msg = f"{self.class_name}.{method_name}: "
-            msg += f"Failed to bootstrap cluster. Status code: {response.status_code} : {response.text}"
-            print(msg)
+        msg = f"{self.class_name}.{method_name}: "
+        msg += f"Failed to bootstrap cluster. Status code: {response.status_code} : {response.text}"
+        print(msg)
 
     def commit(self) -> None:
         """
