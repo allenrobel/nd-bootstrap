@@ -22,7 +22,7 @@ dev = [
 
 [tool.black]
 line-length = 180
-target-version = ["py313"]
+target-version = ["py312"]
 
 [tool.isort]
 profile = "black"
