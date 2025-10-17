@@ -182,6 +182,7 @@ class NdBootstrap:
             msg += "Cluster bootstrap initiated successfully.\n"
             msg += f"Response: {response.text}"
             print(msg)
+            return
         else:
             if response.status_code == 405:
                 msg = f"{self.class_name}.{method_name}: "
