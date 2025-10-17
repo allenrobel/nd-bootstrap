@@ -16,7 +16,7 @@ ignore-patterns=
 
 # Python code to execute, usually for sys.path manipulation such as
 # pygtk.require().
-#init-hook=
+init-hook='import sys; sys.path.append(".")'
 
 # Use multiple processes to speed up Pylint.
 jobs=1
@@ -64,6 +64,7 @@ disable=raw-checker-failed,
         useless-suppression,
         deprecated-pragma,
         import-error,
+        no-name-in-module,
         too-many-locals,
         invalid-name,
         too-many-instance-attributes
@@ -182,7 +183,7 @@ ignored-classes=optparse.Values,thread._local,_thread._local
 # (useful for modules/projects where namespaces are manipulated during runtime
 # and thus existing member attributes cannot be deduced by static analysis. It
 # supports qualified module names, as well as Unix pattern matching.
-ignored-modules=RestSend,Results
+ignored-modules=RestSend,Results,requests,urllib3,yaml,pyyaml
 
 # Show a hint with possible names when a member name was not found. The aspect
 # of finding the hint is based on edit distance.
@@ -474,4 +475,3 @@ valid-metaclass-classmethod-first-arg=mcs
 # Exceptions that will emit a warning when being caught. Defaults to
 # "Exception"
 overgeneral-exceptions=builtins.Exception
-
