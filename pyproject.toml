@@ -22,7 +22,11 @@ dev = [
 
 [tool.black]
 line-length = 180
-target-version = ["py313"]
+target-version = ["py312"]
+
+[tool.pyink]
+line-length = 180
+target-version = ["py312"]
 
 [tool.isort]
 profile = "black"
@@ -36,6 +40,15 @@ disable = [
     "too-many-instance-attributes",
     "line-too-long",
 ]
+
+# For CI/CD environments where dependencies may not be installed
+[tool.pylint.'TYPECHECK']
+ignored-modules = ["requests", "urllib3", "yaml"]
+extension-pkg-allow-list = ["pyyaml"]
+
+[tool.pylint.'MASTER']
+# Ensure pylint can find the package modules
+init-hook = 'import sys; sys.path.append(".")'
 
 [tool.mypy]
 python_version = "3.13"
