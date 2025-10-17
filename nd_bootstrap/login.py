@@ -3,6 +3,7 @@ Nexus Dashboard Login
 
 Handles authentication to Nexus Dashboard and maintains the session.
 """
+
 import inspect
 from sys import exit as sys_exit
 

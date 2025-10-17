@@ -3,6 +3,7 @@ Nexus Dashboard Environment Configuration
 
 Reads and provides property-based access to ND environment variables.
 """
+
 import inspect
 from os import environ
 from sys import exit as sys_exit

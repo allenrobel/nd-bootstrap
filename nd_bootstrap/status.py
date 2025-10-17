@@ -3,6 +3,7 @@ Nexus Dashboard Bootstrap Status Polling
 
 Polls cluster bootstrap installation status.
 """
+
 import inspect
 from sys import exit as sys_exit
 from time import sleep

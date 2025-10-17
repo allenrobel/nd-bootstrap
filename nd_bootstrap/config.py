@@ -3,6 +3,7 @@ Nexus Dashboard Bootstrap Configuration
 
 Loads and validates bootstrap configuration files.
 """
+
 import inspect
 from sys import exit as sys_exit
 

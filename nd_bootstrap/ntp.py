@@ -3,6 +3,7 @@ Nexus Dashboard NTP Server Validation
 
 Validates NTP server reachability and compatibility.
 """
+
 import inspect
 from sys import exit as sys_exit
 

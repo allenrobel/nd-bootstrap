@@ -109,4 +109,7 @@ if __name__ == "__main__":
     instance = NdBootstrap()
     instance.config_file = args.config_file
     instance.dry_run = args.dry_run
+    instance.poll_install_status = args.poll_install_status
+    instance.retries = args.retries
+    instance.interval = args.interval
     instance.commit()
