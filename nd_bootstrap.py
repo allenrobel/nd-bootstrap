@@ -59,26 +59,6 @@ import argparse
 
 from nd_bootstrap.bootstrap import NdBootstrap
 
-# TODO: Add class NdVersion to retrieve and expose Nexus Dashboard version information
-# Version JSON
-# https://192.168.7.13/version.json
-# GET
-# Response:
-# {
-#     "commit_id": "07a8f967",
-#     "build_time": "now",
-#     "build_host": "kube14",
-#     "user": "root",
-#     "product_id": "nd",
-#     "product_name": "Nexus Dashboard",
-#     "release": false,
-#     "major": 3,
-#     "minor": 2,
-#     "maintenance": 2,
-#     "patch": "m"
-# }
-
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Bootstrap ND cluster from YAML configuration")
     parser.add_argument("config_file", help="Path to the YAML configuration file")
@@ -88,28 +68,28 @@ if __name__ == "__main__":
         help="Perform all validation steps but skip the final POST to bootstrap the cluster",
     )
     parser.add_argument(
-        "--poll-install-status",
+        "--poll-status",
         action="store_true",
-        help="Poll the installation status until complete. Ignored if --dry-run is set",
+        help="Poll the bootstrap and services bringup status until both are complete. Ignored if --dry-run is set",
     )
     parser.add_argument(
         "--retries",
         type=int,
         default=10,
-        help="Number of retries for polling the installation status. Ignored if --poll-install-status is not set or --dry-run is set",
+        help="Number of retries for polling the status (bootstrap and services). Ignored if --poll-status is not set or --dry-run is set",
     )
     parser.add_argument(
         "--interval",
         type=int,
         default=10,
-        help="Interval (in seconds) between polling attempts. Ignored if --poll-install-status is not set or --dry-run is set",
+        help="Interval (in seconds) between polling attempts when polling both bootstrap and services status. Ignored if --poll-status is not set or --dry-run is set",
     )
     args = parser.parse_args()
 
     instance = NdBootstrap()
     instance.config_file = args.config_file
     instance.dry_run = args.dry_run
-    instance.poll = args.poll_install_status
+    instance.poll = args.poll_status
     instance.retries = args.retries
     instance.interval = args.interval
     instance.commit()
