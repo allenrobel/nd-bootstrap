@@ -146,12 +146,7 @@ class NdPollServicesStatus:
             # 2. operState.state must be "Healthy"
             # 3. deployment_state must be "Enabled"
             # 4. install_state must be "Installed"
-            is_ready = (
-                timestamp is not None
-                and oper_state == "Healthy"
-                and deployment_state == "Enabled"
-                and install_state == "Installed"
-            )
+            is_ready = timestamp is not None and oper_state == "Healthy" and deployment_state == "Enabled" and install_state == "Installed"
 
             return {
                 "deployment_state": deployment_state,
