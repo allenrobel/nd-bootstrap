@@ -97,7 +97,7 @@ class NdPollBootstrapStatus:
             print(msg)
             return 0
 
-        if response.status_code not in (200, 201):
+        if response.status_code != 200:
             msg = f"{self.class_name}.{method_name}: "
             msg += f"Failed to get install status. status code: {response.status_code}, response.text: {response.text}. "
             msg += "Returning 0% overall progress."
