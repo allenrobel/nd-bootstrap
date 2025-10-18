@@ -111,26 +111,27 @@ class NdPollBootstrapStatus:
             print(msg)
             sys_exit(1)
 
+        msg = f"{self.class_name}.{method_name}: "
+        msg += "Polling bootstrap status until complete. "
+        msg += f"Max retries: {self._retries}, interval: {self._interval} seconds."
+        print(msg)
+
         while True:
             self._retries -= 1
-            sleep(self._interval)
             if self._retries <= 0:
                 msg = f"{self.class_name}.{method_name}: "
-                msg += "Exceeded maximum retries.  Returning."
+                msg += "Exceeded maximum retries. Returning."
                 print(msg)
                 return
-            response = self._session.get(self._url)
-            if response.status_code not in (200, 201, 204):
-                msg = f"{self.class_name}.{method_name}: "
-                msg += f"Failed to get install status. Retries remaining: {self._retries}. "
-                msg += f"status code: {response.status_code}, response.text: {response.text}"
-                print(msg)
-                continue
-            overall_progress = response.json().get("overallProgress", 0)
+
+            overall_progress = self.poll_once()
+
             if overall_progress == 100:
                 print(f"{self.class_name}.{method_name}: Bootstrap complete.")
                 return
-            print(f"{self.class_name}.{method_name}: Bootstrap in progress... {overall_progress}%")
+
+            print(f"{self.class_name}.{method_name}: Bootstrap in progress... {overall_progress}%, retries remaining: {self._retries}")
+            sleep(self._interval)
 
     @property
     def session(self) -> requests.Session:

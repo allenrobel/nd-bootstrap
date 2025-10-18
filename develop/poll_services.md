@@ -1,14 +1,18 @@
-# Bootstrap notes
+# poll_services.py developer notes
 
 After bootstrap is complete, check the operState status via following endpoint:
 
 Path: https://192.168.7.13/api/v1/release/servicepackages
 Verb: GET
 
-1. wait for items[0].status.operState.timeStamp to be non-null (operState.state field will be missing while timestamp is null)
-2. wait for operState.state == "Healthy"
+## The new class should do the following
 
-items[0].status.deploymentState.state should be "Enabled" when the bootstrap is complete.
+1. Accept retries and interval options (via properties). These should behave exactly like those in nd_bootstrap/poll_bootstrap_status.py
+2. wait for items[0].status.operState.timeStamp to be non-null (operState.state field will be missing while timestamp is null)
+3. wait for operState.state == "Healthy"
+4. Once operState.state == "Healthy" verify that items[0].status.deploymentState.state == "Enabled" and items[0].status.installState.state == "Installed".
+5. Return when all the above are verified.
+6. Exit with error if operState.state does not transition to "Healthy"
 
 ## Example Response after successful installation
 
