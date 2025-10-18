@@ -14,7 +14,7 @@ from nd_bootstrap.config import NdBootstrapConfig
 from nd_bootstrap.environment import NdEnvironment
 from nd_bootstrap.login import NdLogin
 from nd_bootstrap.ntp import NdNtpServersValidate
-from nd_bootstrap.status import NdPollBootstrapStatus
+from nd_bootstrap.poll_bootstrap_status import NdPollBootstrapStatus
 
 
 class NdBootstrap:
