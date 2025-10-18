@@ -87,7 +87,11 @@ class NdPollServicesStatus:
                 - oper_state: str or None
                 - timestamp: str or None
                 - install_state: str or None
-                - is_ready: bool (True if operState.timeStamp is non-null and operState.state == "Healthy")
+                - is_ready: bool True if services are ready
+                  - operState.timeStamp is non-null
+                  - operState.state == "Healthy"
+                  - deploymentState.state == "Enabled"
+                  - installState.state == "Installed"
         """
         method_name: str = inspect.stack()[0][3]
         msg: str = ""
