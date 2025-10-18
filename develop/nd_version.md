@@ -9,7 +9,7 @@ nd_bootstrap/version.py
 ## Class behavior
 
 - import NdEnvironment for credentials (from nd_bootstrap.environment import NdEnvironment)
-- expose public setter/getter property `session` which accepts and returns a Requests.session instance
+- expose public setter/getter property `session` which accepts and returns a requests.Session instance
 - expose public method NdVersion.commit() to send the request.
 - expose public getter property `info` which contains the response body.
 
