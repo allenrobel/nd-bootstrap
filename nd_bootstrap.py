@@ -90,7 +90,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--poll-status",
         action="store_true",
-        help="Poll the installation status until complete. Ignored if --dry-run is set",
+        help="Poll the bootstrap and services bringup status until both are complete. Ignored if --dry-run is set",
     )
     parser.add_argument(
         "--retries",
@@ -109,7 +109,7 @@ if __name__ == "__main__":
     instance = NdBootstrap()
     instance.config_file = args.config_file
     instance.dry_run = args.dry_run
-    instance.poll = args.poll_install_status
+    instance.poll = args.poll_status
     instance.retries = args.retries
     instance.interval = args.interval
     instance.commit()
