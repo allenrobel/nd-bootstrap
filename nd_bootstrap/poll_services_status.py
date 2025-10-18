@@ -13,7 +13,7 @@ from time import sleep
 import requests
 
 from nd_bootstrap.environment import NdEnvironment
-
+from nd_bootstrap.login import NdLogin
 
 class NdPollServicesStatus:
     """
@@ -104,7 +104,23 @@ class NdPollServicesStatus:
             sys_exit(1)
 
         response = self._session.get(self._url)
-        if response.status_code != 200:
+
+        if response.status_code == 401:
+            nd_login = NdLogin()
+            nd_login.commit()
+            self._session = nd_login.session
+            msg = f"{self.class_name}.{method_name}: "
+            msg += "Re-authenticated during services polling.  Returning empty status."
+            print(msg)
+            return {
+                "deployment_state": None,
+                "oper_state": None,
+                "timestamp": None,
+                "install_state": None,
+                "is_ready": False,
+            }
+
+        if response.status_code not in (200, 401):
             msg = f"{self.class_name}.{method_name}: "
             msg += f"Failed to get services status. status code: {response.status_code}, response.text: {response.text}. "
             msg += "Returning empty status."
