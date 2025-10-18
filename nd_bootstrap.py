@@ -88,7 +88,7 @@ if __name__ == "__main__":
         help="Perform all validation steps but skip the final POST to bootstrap the cluster",
     )
     parser.add_argument(
-        "--poll-install-status",
+        "--poll-status",
         action="store_true",
         help="Poll the installation status until complete. Ignored if --dry-run is set",
     )
@@ -96,13 +96,13 @@ if __name__ == "__main__":
         "--retries",
         type=int,
         default=10,
-        help="Number of retries for polling the installation status. Ignored if --poll-install-status is not set or --dry-run is set",
+        help="Number of retries for polling the installation status. Ignored if --poll-status is not set or --dry-run is set",
     )
     parser.add_argument(
         "--interval",
         type=int,
         default=10,
-        help="Interval (in seconds) between polling attempts. Ignored if --poll-install-status is not set or --dry-run is set",
+        help="Interval (in seconds) between polling attempts. Ignored if --poll-status is not set or --dry-run is set",
     )
     args = parser.parse_args()
 

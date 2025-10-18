@@ -18,7 +18,7 @@ Bootstrap a Nexus Dashboard cluster.
 - Retrieves node serial numbers from Nexus Dashboard and dynamically updates the node configurations prior to POST
   - No need to manually specify serial numbers in the configuration file
 - Supports a --dry-run flag to perform all validation steps but skip the final POST to bootstrap the cluster
-- Supports a --poll-install-status flag to poll for bootstrap completion before exiting
+- Supports a --poll-status flag to poll for bootstrap completion before exiting
   - polling behavior can be controlled with --retries and --interval flags
   - Polls for bootstrap completion
   - Polls for healthy services state after bootstrap is complete
@@ -92,7 +92,7 @@ cd $HOME/repos/nd-bootstrap
 
 ```bash
 cd $HOME/repos/nd-bootstrap
-./nd_bootstrap.py nd_bootstrap_vnode.yaml --poll-install-status --retries 30 --interval 20
+./nd_bootstrap.py nd_bootstrap_vnode.yaml --poll-status --retries 30 --interval 20
 ```
 
 ### Example output (with --dry-run option) prior to bootstrap being initiated
