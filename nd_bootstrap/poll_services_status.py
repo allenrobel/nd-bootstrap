@@ -15,6 +15,7 @@ import requests
 from nd_bootstrap.environment import NdEnvironment
 from nd_bootstrap.login import NdLogin
 
+
 class NdPollServicesStatus:
     """
     # Summary
@@ -120,7 +121,7 @@ class NdPollServicesStatus:
                 "is_ready": False,
             }
 
-        if response.status_code not in (200, 401):
+        if response.status_code != 200:
             msg = f"{self.class_name}.{method_name}: "
             msg += f"Failed to get services status. status code: {response.status_code}, response.text: {response.text}. "
             msg += "Returning empty status."
