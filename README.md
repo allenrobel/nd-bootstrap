@@ -20,6 +20,8 @@ Bootstrap a Nexus Dashboard cluster.
 - Supports a --dry-run flag to perform all validation steps but skip the final POST to bootstrap the cluster
 - Supports a --poll-install-status flag to poll for bootstrap completion before exiting
   - polling behavior can be controlled with --retries and --interval flags
+  - Polls for bootstrap completion
+  - Polls for healthy services state after bootstrap is complete
 - Posts the configuration to Nexus Dashboard after the terminal-based bringup is complete
 - Modular design with classes for environment, login, configuration, NTP validation, and bootstrapping
 - Uses requests library for HTTP interactions
@@ -86,14 +88,14 @@ cd $HOME/repos/nd-bootstrap
 ./nd_bootstrap.py nd_bootstrap_vnode.yaml --dry-run
 ```
 
-### 4. Run the script without --dry-run to post the configuration to Nexus Dashboard and poll for bootstrap completion
+### 4. Run the script without --dry-run to post the configuration to Nexus Dashboard and poll for bootstrap completion and services health
 
 ```bash
 cd $HOME/repos/nd-bootstrap
 ./nd_bootstrap.py nd_bootstrap_vnode.yaml --poll-install-status --retries 30 --interval 20
 ```
 
-### Example output (with --dry-run option)
+### Example output (with --dry-run option) prior to bootstrap being initiated
 
 ```bash
 (nd-bootstrap) arobel@Allen-M4 nd-bootstrap % export ND_IP4=192.168.7.13
@@ -176,5 +178,25 @@ Would POST the following configuration to https://192.168.7.13/v2/bootstrap/clus
         }
     ]
 }
+(nd-bootstrap) arobel@Allen-M4 nd-bootstrap %
+```
+
+### Example output, with polling enabled, after bootstrap is complete and all services are up/healthy
+
+The following is to show that you can run the script against a fully booted Nexus Dashboard instance with no ill effects.
+
+```bash
+(nd-bootstrap) arobel@Allen-M4 nd-bootstrap % ./nd_bootstrap.py nd_bootstrap_vnode.yaml --poll --retries 20 --interval 20
+NdBootstrap.commit: Bootstrapping cluster 'ND14-3' on Nexus Dashboard at 192.168.7.13.
+
+NdBootstrap.update_node_serial_numbers: Updated node with managementNetwork.ipSubnet 192.168.7.13/24 to serialNumber D25C4ABF6A02.
+NdNtpServersValidate.commit: NTP servers validation succeeded.
+NdBootstrap.send_bootstrap_configuration: Sending bootstrap configuration to Nexus Dashboard at https://192.168.7.13/v2/bootstrap/cluster.
+
+NdBootstrap.send_bootstrap_configuration: Bootstrap configuration already sent. Returning...
+NdPollBootstrapStatus.commit: Polling bootstrap status until complete. Max retries: 20, interval: 20 seconds.
+NdPollBootstrapStatus.commit: Bootstrap complete.
+NdPollServicesStatus.commit: Polling services status until healthy. Max retries: 50, interval: 30 seconds.
+NdPollServicesStatus.commit: Services are healthy. operState: Healthy, deploymentState: Enabled, timestamp: 2025-10-17T19:07:16Z
 (nd-bootstrap) arobel@Allen-M4 nd-bootstrap %
 ```

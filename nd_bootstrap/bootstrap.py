@@ -14,7 +14,8 @@ from nd_bootstrap.config import NdBootstrapConfig
 from nd_bootstrap.environment import NdEnvironment
 from nd_bootstrap.login import NdLogin
 from nd_bootstrap.ntp import NdNtpServersValidate
-from nd_bootstrap.status import NdPollBootstrapStatus
+from nd_bootstrap.poll_bootstrap_status import NdPollBootstrapStatus
+from nd_bootstrap.poll_services_status import NdPollServicesStatus
 
 
 class NdBootstrap:
@@ -217,16 +218,6 @@ class NdBootstrap:
         self.nd_bootstrap_config.commit()
         self._config = self.nd_bootstrap_config.config
 
-        # Return if cluster is already bootstrapped
-        nd_install_status = NdPollBootstrapStatus()
-        nd_install_status.session = self.session
-        percent_complete = nd_install_status.poll_once()
-        if percent_complete == 100:
-            msg = f"{self.class_name}.{method_name}: "
-            msg += f"Cluster '{self.nd_bootstrap_config.nd_cluster_name}' is already bootstrapped."
-            print(msg)
-            return
-
         self.update_node_credentials()
 
         msg = f"{self.class_name}.{method_name}: "
@@ -243,9 +234,17 @@ class NdBootstrap:
         self.send_bootstrap_configuration()
 
         if self.poll:
-            nd_install_status.retries = self.retries
-            nd_install_status.interval = self.interval
-            nd_install_status.commit()
+            nd_bootstrap_status = NdPollBootstrapStatus()
+            nd_bootstrap_status.session = self.session
+            nd_bootstrap_status.retries = self.retries
+            nd_bootstrap_status.interval = self.interval
+            nd_bootstrap_status.commit()
+
+            nd_services_status = NdPollServicesStatus()
+            nd_services_status.session = self.session
+            nd_services_status.retries = 50
+            nd_services_status.interval = 30
+            nd_services_status.commit()
 
     @property
     def config_file(self) -> str:
