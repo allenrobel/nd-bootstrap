@@ -82,7 +82,7 @@ if __name__ == "__main__":
         "--interval",
         type=int,
         default=10,
-        help="Interval (in seconds) between polling attempts. Ignored if --poll-status is not set or --dry-run is set",
+        help="Interval (in seconds) between polling attempts when polling both bootstrap and services status. Ignored if --poll-status is not set or --dry-run is set",
     )
     args = parser.parse_args()
 
