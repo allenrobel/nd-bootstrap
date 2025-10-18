@@ -35,6 +35,7 @@ class NdPollServicesStatus:
     1. items[0].status.operState.timeStamp to be non-null (operState.state field will be missing while timestamp is null)
     2. items[0].status.operState.state == "Healthy"
     3. items[0].status.deploymentState.state == "Enabled"
+    4. items[0].status.installState.state == "Installed"
 
     ## Properties
 
