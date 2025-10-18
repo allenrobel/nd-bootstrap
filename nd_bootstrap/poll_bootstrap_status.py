@@ -13,13 +13,14 @@ import requests
 from nd_bootstrap.environment import NdEnvironment
 from nd_bootstrap.login import NdLogin
 
+
 class NdPollBootstrapStatus:
     """
     # Summary
 
     Poll cluster bootstrap status.
 
-    - If NdPollBootstrapStatus.poll_once() is call, poll one time and return the overall progress percentage.
+    - If NdPollBootstrapStatus.poll_once() is called, poll one time and return the overall progress percentage.
     - If NdPollBootstrapStatus.commit() is called, poll until response.overallProgress == 100, or retries are exhausted.
 
     ## Endpoint
@@ -82,12 +83,6 @@ class NdPollBootstrapStatus:
             sys_exit(1)
 
         response = self._session.get(self._url)
-        if response.status_code not in (200, 401, 404):
-            msg = f"{self.class_name}.{method_name}: "
-            msg += f"Failed to get install status. status code: {response.status_code}, response.text: {response.text}. "
-            msg += "Returning 0% overall progress."
-            print(msg)
-            return 0
 
         if response.status_code == 404:
             # Bootstrap will return 404 for a short time (about 20 seconds) after login completes
@@ -99,6 +94,13 @@ class NdPollBootstrapStatus:
             self._session = nd_login.session
             msg = f"{self.class_name}.{method_name}: "
             msg += "Re-authenticated during bootstrap polling.  Returning 0% overall progress."
+            print(msg)
+            return 0
+
+        if response.status_code not in (200, 201):
+            msg = f"{self.class_name}.{method_name}: "
+            msg += f"Failed to get install status. status code: {response.status_code}, response.text: {response.text}. "
+            msg += "Returning 0% overall progress."
             print(msg)
             return 0
 
