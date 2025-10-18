@@ -76,7 +76,7 @@ if __name__ == "__main__":
         "--retries",
         type=int,
         default=10,
-        help="Number of retries for polling the installation status. Ignored if --poll-status is not set or --dry-run is set",
+        help="Number of retries for polling the status (bootstrap and services). Ignored if --poll-status is not set or --dry-run is set",
     )
     parser.add_argument(
         "--interval",
