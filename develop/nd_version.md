@@ -17,7 +17,7 @@ nd_bootstrap/version.py
 
 ### Path
 
-https://192.168.7.13/version.json
+https://<nd_ip>/version.json
 
 ### Verb
 
