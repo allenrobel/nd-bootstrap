@@ -186,7 +186,7 @@ class NdBootstrap:
             return
         if response.status_code in (200, 201):
             msg = f"{self.class_name}.{method_name}: "
-            msg += "Cluster bootstrap initiated successfully.\n"
+            msg += "Cluster bootstrap initiated successfully."
             print(msg)
             return
         msg = f"{self.class_name}.{method_name}: "
