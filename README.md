@@ -183,7 +183,7 @@ Would POST the following configuration to https://192.168.7.13/v2/bootstrap/clus
 
 ### Example output, successful bootstrap
 
-```bash
+```text
 (nd-bootstrap) arobel@Allen-M4 nd-bootstrap % ./nd_bootstrap.py nd_bootstrap_vnode.yaml --poll --retries 60 --interval 20
 NdBootstrap.commit: Bootstrapping cluster 'ND14-3' on Nexus Dashboard at 192.168.7.13.
 NdBootstrap.update_node_serial_numbers: Updated node with managementNetwork.ipSubnet 192.168.7.13/24 to serialNumber C234361FA593.
