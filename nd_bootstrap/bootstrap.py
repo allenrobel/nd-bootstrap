@@ -242,8 +242,8 @@ class NdBootstrap:
 
             nd_services_status = NdPollServicesStatus()
             nd_services_status.session = self.session
-            nd_services_status.retries = 50
-            nd_services_status.interval = 30
+            nd_services_status.retries = self.retries
+            nd_services_status.interval = self.interval
             nd_services_status.commit()
 
     @property
