@@ -228,7 +228,7 @@ class NdPollServicesStatus:
             oper_state = status_info.get("oper_state", "NA")
             install_state = status_info.get("install_state", "NA")
             timestamp = status_info.get("timestamp", None)
-            display_timestamp = timestamp if timestamp is not None else 'NA'
+            display_timestamp = timestamp if timestamp is not None else "NA"
 
             # Check if services are ready
             if status_info.get("is_ready", False):
