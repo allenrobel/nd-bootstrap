@@ -60,6 +60,7 @@ class NdPollBootstrapStatus:
         self.class_name: str = self.__class__.__name__
         self._interval: int = 10
         self._retries: int = 10
+        self._last_overall_progress: int = 0
         self._session: requests.Session
         self.nd_environment = NdEnvironment()
         self._url: str = f"https://{self.nd_environment.nd_ip}/clusterstatus/install"
@@ -82,29 +83,38 @@ class NdPollBootstrapStatus:
             print(msg)
             sys_exit(1)
 
-        response = self._session.get(self._url)
+        try:
+            response = self._session.get(self._url)
+        except requests.RequestException:
+            # Handle network/connection errors
+            msg = f"{self.class_name}.{method_name}: "
+            msg += "Encountered expected network error during bootstrap which can be ignored.\n"
+            msg += "You may see this message for approximately two minutes during bootstrap.\n"
+            msg += "Returning 0% overall progress."
+            print(msg)
+            return self._last_overall_progress
 
         if response.status_code == 404:
             # Bootstrap will return 404 for a short time (about 20 seconds) after login completes
-            return 0
+            return self._last_overall_progress
 
         if response.status_code == 401:
             nd_login = NdLogin()
             nd_login.commit()
             self._session = nd_login.session
             msg = f"{self.class_name}.{method_name}: "
-            msg += "Re-authenticated during bootstrap polling.  Returning 0% overall progress."
+            msg += "Re-authenticated during bootstrap polling."
             print(msg)
-            return 0
+            return self._last_overall_progress
 
         if response.status_code != 200:
             msg = f"{self.class_name}.{method_name}: "
             msg += f"Failed to get install status. status code: {response.status_code}, response.text: {response.text}. "
-            msg += "Returning 0% overall progress."
             print(msg)
-            return 0
+            return self._last_overall_progress
 
         overall_progress: int = response.json().get("overallProgress", 0)
+        self._last_overall_progress = overall_progress
         return overall_progress
 
     def commit(self) -> None:
@@ -135,7 +145,7 @@ class NdPollBootstrapStatus:
             self._retries -= 1
             if self._retries <= 0:
                 msg = f"{self.class_name}.{method_name}: "
-                msg += "Exceeded maximum retries. Returning."
+                msg += f"Exceeded maximum retries ({self._retries}). Returning."
                 print(msg)
                 return
 
@@ -145,7 +155,7 @@ class NdPollBootstrapStatus:
                 print(f"{self.class_name}.{method_name}: Bootstrap complete.")
                 return
 
-            print(f"{self.class_name}.{method_name}: Bootstrap in progress... {overall_progress}%, retries remaining: {self._retries}")
+            print(f"{self.class_name}.{method_name}: Bootstrap in progress. {overall_progress}% complete, retries remaining: {self._retries}")
             sleep(self._interval)
 
     @property
