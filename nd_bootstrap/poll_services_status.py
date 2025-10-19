@@ -223,33 +223,34 @@ class NdPollServicesStatus:
 
             status_info = self.poll_once()
 
+            # Print progress
+            deployment_state = status_info.get("deployment_state", "NA")
+            oper_state = status_info.get("oper_state", "NA")
+            install_state = status_info.get("install_state", "NA")
+            timestamp = status_info.get("timestamp", "NA")
+
             # Check if services are ready
-            if status_info["is_ready"]:
-                msg = f"{self.class_name}.{method_name}: Services are healthy. "
-                msg += f"operState: {status_info['oper_state']}, "
-                msg += f"deploymentState: {status_info['deployment_state']}, "
-                msg += f"timestamp: {status_info['timestamp']}"
+            if status_info.get("is_ready", False):
+                msg = f"{self.class_name}.{method_name}: "
+                msg += "Services are healthy. "
+                msg += f"operState: {oper_state}, "
+                msg += f"deploymentState: {deployment_state}, "
+                msg += f"installState: {install_state}, "
+                msg += f"timestamp: {timestamp}, "
+                msg += f"retries remaining: {self._retries}"
                 print(msg)
                 return
 
-            # Print progress
-            deployment_state = status_info["deployment_state"] or "Unknown"
-            oper_state = status_info["oper_state"] or "Not available"
-            timestamp = status_info["timestamp"]
-
-            if timestamp is None:
-                msg = f"{self.class_name}.{method_name}: "
+            msg = f"{self.class_name}.{method_name}: "
+            if timestamp == "NA":
                 msg += "Waiting for operState timestamp. "
-                msg += f"deploymentState: {deployment_state}, "
-                msg += f"installState: {status_info['install_state']}, "
-                msg += f"retries remaining: {self._retries}"
             else:
-                msg = f"{self.class_name}.{method_name}: "
                 msg += "Waiting for services to become healthy. "
-                msg += f"operState: {oper_state}, "
-                msg += f"deploymentState: {deployment_state}, "
-                msg += f"installState: {status_info['install_state']}, "
-                msg += f"retries remaining: {self._retries}"
+            msg += f"operState: {oper_state}, "
+            msg += f"deploymentState: {deployment_state}, "
+            msg += f"installState: {install_state}, "
+            msg += f"timestamp: {timestamp}, "
+            msg += f"retries remaining: {self._retries}"
             print(msg)
             sleep(self._interval)
 
