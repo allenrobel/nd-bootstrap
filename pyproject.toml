@@ -39,6 +39,7 @@ max-line-length = 180
 disable = [
     "too-many-instance-attributes",
     "line-too-long",
+    "duplicate-code",
 ]
 
 # For CI/CD environments where dependencies may not be installed

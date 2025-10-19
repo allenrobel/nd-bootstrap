@@ -164,7 +164,7 @@ class NdBootstrap:
             sys_exit(0)
 
         msg = f"{self.class_name}.{method_name}: "
-        msg += f"Sending bootstrap configuration to Nexus Dashboard at {url}.\n"
+        msg += f"Sending bootstrap configuration to Nexus Dashboard at {url}."
         print(msg)
 
         try:
@@ -181,13 +181,12 @@ class NdBootstrap:
             return
         if response.status_code == 405:
             msg = f"{self.class_name}.{method_name}: "
-            msg += "Bootstrap configuration already sent. Returning..."
+            msg += "Bootstrap configuration already sent. Returning."
             print(msg)
             return
         if response.status_code in (200, 201):
             msg = f"{self.class_name}.{method_name}: "
-            msg += "Cluster bootstrap initiated successfully.\n"
-            msg += f"Response: {response.text}"
+            msg += "Cluster bootstrap initiated successfully."
             print(msg)
             return
         msg = f"{self.class_name}.{method_name}: "
@@ -222,7 +221,7 @@ class NdBootstrap:
 
         msg = f"{self.class_name}.{method_name}: "
         msg += f"Bootstrapping cluster '{self.nd_bootstrap_config.nd_cluster_name}' "
-        msg += f"on Nexus Dashboard at {self.nd_environment.nd_ip}.\n"
+        msg += f"on Nexus Dashboard at {self.nd_environment.nd_ip}."
         print(msg)
         self.update_node_serial_numbers()
 
