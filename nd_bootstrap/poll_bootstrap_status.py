@@ -90,7 +90,6 @@ class NdPollBootstrapStatus:
             msg = f"{self.class_name}.{method_name}: "
             msg += "Encountered expected network error during bootstrap which can be ignored.\n"
             msg += "You may see this message for approximately two minutes during bootstrap.\n"
-            msg += "Returning 0% overall progress."
             print(msg)
             return self._last_overall_progress
 
@@ -113,7 +112,7 @@ class NdPollBootstrapStatus:
             print(msg)
             return self._last_overall_progress
 
-        overall_progress: int = response.json().get("overallProgress", 0)
+        overall_progress: int = response.json().get("overallProgress", self._last_overall_progress)
         self._last_overall_progress = overall_progress
         return overall_progress
 
@@ -145,7 +144,7 @@ class NdPollBootstrapStatus:
             self._retries -= 1
             if self._retries <= 0:
                 msg = f"{self.class_name}.{method_name}: "
-                msg += f"Exceeded maximum retries ({self._retries}). Returning."
+                msg += "Exceeded maximum retries. Returning."
                 print(msg)
                 return
 
