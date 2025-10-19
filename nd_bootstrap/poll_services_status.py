@@ -227,7 +227,8 @@ class NdPollServicesStatus:
             deployment_state = status_info.get("deployment_state", "NA")
             oper_state = status_info.get("oper_state", "NA")
             install_state = status_info.get("install_state", "NA")
-            timestamp = status_info.get("timestamp", "NA")
+            timestamp = status_info.get("timestamp", None)
+            display_timestamp = timestamp if timestamp is not None else 'NA'
 
             # Check if services are ready
             if status_info.get("is_ready", False):
@@ -236,20 +237,20 @@ class NdPollServicesStatus:
                 msg += f"operState: {oper_state}, "
                 msg += f"deploymentState: {deployment_state}, "
                 msg += f"installState: {install_state}, "
-                msg += f"timestamp: {timestamp}, "
+                msg += f"timestamp: {display_timestamp}, "
                 msg += f"retries remaining: {self._retries}"
                 print(msg)
                 return
 
             msg = f"{self.class_name}.{method_name}: "
-            if timestamp == "NA":
+            if timestamp is None:
                 msg += "Waiting for operState timestamp. "
             else:
                 msg += "Waiting for services to become healthy. "
             msg += f"operState: {oper_state}, "
             msg += f"deploymentState: {deployment_state}, "
             msg += f"installState: {install_state}, "
-            msg += f"timestamp: {timestamp}, "
+            msg += f"timestamp: {display_timestamp}, "
             msg += f"retries remaining: {self._retries}"
             print(msg)
             sleep(self._interval)
