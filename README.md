@@ -181,6 +181,85 @@ Would POST the following configuration to https://192.168.7.13/v2/bootstrap/clus
 (nd-bootstrap) arobel@Allen-M4 nd-bootstrap %
 ```
 
+### Example output, successful bootstrap
+
+```text
+(nd-bootstrap) arobel@Allen-M4 nd-bootstrap % ./nd_bootstrap.py nd_bootstrap_vnode.yaml --poll --retries 60 --interval 20
+NdBootstrap.commit: Bootstrapping cluster 'ND14-3' on Nexus Dashboard at 192.168.7.13.
+NdBootstrap.update_node_serial_numbers: Updated node with managementNetwork.ipSubnet 192.168.7.13/24 to serialNumber C234361FA593.
+NdNtpServersValidate.commit: NTP servers validation succeeded.
+NdBootstrap.send_bootstrap_configuration: Sending bootstrap configuration to Nexus Dashboard at https://192.168.7.13/v2/bootstrap/cluster.
+NdBootstrap.send_bootstrap_configuration: Cluster bootstrap initiated successfully.
+NdPollBootstrapStatus.commit: Polling bootstrap status until complete. Max retries: 60, interval: 20 seconds.
+NdPollBootstrapStatus.commit: Bootstrap in progress. 0% complete, retries remaining: 59
+NdPollBootstrapStatus.commit: Bootstrap in progress. 0% complete, retries remaining: 58
+NdPollBootstrapStatus.commit: Bootstrap in progress. 6% complete, retries remaining: 57
+NdPollBootstrapStatus.commit: Bootstrap in progress. 6% complete, retries remaining: 56
+NdPollBootstrapStatus.commit: Bootstrap in progress. 17% complete, retries remaining: 55
+NdPollBootstrapStatus.poll_once: Ignoring recoverable and temporary network error. You may see this message multiple times.
+NdPollBootstrapStatus.commit: Bootstrap in progress. 17% complete, retries remaining: 54
+NdPollBootstrapStatus.poll_once: Re-authenticated during bootstrap polling.
+NdPollBootstrapStatus.commit: Bootstrap in progress. 17% complete, retries remaining: 53
+NdPollBootstrapStatus.commit: Bootstrap in progress. 32% complete, retries remaining: 52
+NdPollBootstrapStatus.commit: Bootstrap in progress. 32% complete, retries remaining: 51
+NdPollBootstrapStatus.commit: Bootstrap in progress. 32% complete, retries remaining: 50
+NdPollBootstrapStatus.commit: Bootstrap in progress. 32% complete, retries remaining: 49
+NdPollBootstrapStatus.commit: Bootstrap in progress. 32% complete, retries remaining: 48
+NdPollBootstrapStatus.commit: Bootstrap in progress. 32% complete, retries remaining: 47
+NdPollBootstrapStatus.commit: Bootstrap in progress. 32% complete, retries remaining: 46
+NdPollBootstrapStatus.commit: Bootstrap in progress. 32% complete, retries remaining: 45
+NdPollBootstrapStatus.commit: Bootstrap in progress. 32% complete, retries remaining: 44
+NdPollBootstrapStatus.commit: Bootstrap in progress. 32% complete, retries remaining: 43
+NdPollBootstrapStatus.commit: Bootstrap in progress. 32% complete, retries remaining: 42
+NdPollBootstrapStatus.commit: Bootstrap in progress. 32% complete, retries remaining: 41
+NdPollBootstrapStatus.commit: Bootstrap in progress. 32% complete, retries remaining: 40
+NdPollBootstrapStatus.commit: Bootstrap in progress. 32% complete, retries remaining: 39
+NdPollBootstrapStatus.commit: Bootstrap in progress. 32% complete, retries remaining: 38
+NdPollBootstrapStatus.commit: Bootstrap in progress. 32% complete, retries remaining: 37
+NdPollBootstrapStatus.commit: Bootstrap in progress. 32% complete, retries remaining: 36
+NdPollBootstrapStatus.commit: Bootstrap in progress. 32% complete, retries remaining: 35
+NdPollBootstrapStatus.commit: Bootstrap in progress. 32% complete, retries remaining: 34
+NdPollBootstrapStatus.commit: Bootstrap in progress. 32% complete, retries remaining: 33
+NdPollBootstrapStatus.commit: Bootstrap in progress. 32% complete, retries remaining: 32
+NdPollBootstrapStatus.commit: Bootstrap in progress. 32% complete, retries remaining: 31
+NdPollBootstrapStatus.commit: Bootstrap in progress. 32% complete, retries remaining: 30
+NdPollBootstrapStatus.commit: Bootstrap in progress. 99% complete, retries remaining: 29
+NdPollBootstrapStatus.commit: Bootstrap in progress. 99% complete, retries remaining: 28
+NdPollBootstrapStatus.commit: Bootstrap in progress. 99% complete, retries remaining: 27
+NdPollBootstrapStatus.commit: Bootstrap in progress. 99% complete, retries remaining: 26
+NdPollBootstrapStatus.commit: Bootstrap in progress. 99% complete, retries remaining: 25
+NdPollBootstrapStatus.commit: Bootstrap in progress. 99% complete, retries remaining: 24
+NdPollBootstrapStatus.commit: Bootstrap complete.
+NdPollServicesStatus.commit: Polling services status until healthy. Max retries: 60, interval: 20 seconds.
+NdPollServicesStatus.poll_once: Re-authenticated during services polling.  Returning empty status.
+NdPollServicesStatus.commit: Waiting for operState timestamp. operState: None, deploymentState: None, installState: None, timestamp: NA, retries remaining: 59
+NdPollServicesStatus.poll_once: No service packages found in response.
+NdPollServicesStatus.commit: Waiting for operState timestamp. operState: None, deploymentState: None, installState: None, timestamp: NA, retries remaining: 58
+NdPollServicesStatus.commit: Waiting for operState timestamp. operState: None, deploymentState: ProfileSelection, installState: Installed, timestamp: NA, retries remaining: 57
+NdPollServicesStatus.commit: Waiting for operState timestamp. operState: None, deploymentState: ProfileSelection, installState: Installed, timestamp: NA, retries remaining: 56
+NdPollServicesStatus.commit: Waiting for operState timestamp. operState: None, deploymentState: ProfileSelection, installState: Installed, timestamp: NA, retries remaining: 55
+NdPollServicesStatus.commit: Waiting for operState timestamp. operState: None, deploymentState: Processing, installState: Installed, timestamp: NA, retries remaining: 54
+NdPollServicesStatus.commit: Waiting for operState timestamp. operState: None, deploymentState: Processing, installState: Installed, timestamp: NA, retries remaining: 53
+NdPollServicesStatus.commit: Waiting for operState timestamp. operState: None, deploymentState: Processing, installState: Installed, timestamp: NA, retries remaining: 52
+NdPollServicesStatus.commit: Waiting for operState timestamp. operState: None, deploymentState: Processing, installState: Installed, timestamp: NA, retries remaining: 51
+NdPollServicesStatus.commit: Waiting for operState timestamp. operState: None, deploymentState: Processing, installState: Installed, timestamp: NA, retries remaining: 50
+NdPollServicesStatus.commit: Waiting for operState timestamp. operState: None, deploymentState: Processing, installState: Installed, timestamp: NA, retries remaining: 49
+NdPollServicesStatus.commit: Waiting for operState timestamp. operState: None, deploymentState: Processing, installState: Installed, timestamp: NA, retries remaining: 48
+NdPollServicesStatus.commit: Waiting for operState timestamp. operState: None, deploymentState: Processing, installState: Installed, timestamp: NA, retries remaining: 47
+NdPollServicesStatus.commit: Waiting for operState timestamp. operState: None, deploymentState: Processing, installState: Installed, timestamp: NA, retries remaining: 46
+NdPollServicesStatus.commit: Waiting for operState timestamp. operState: None, deploymentState: Processing, installState: Installed, timestamp: NA, retries remaining: 45
+NdPollServicesStatus.commit: Waiting for operState timestamp. operState: None, deploymentState: Processing, installState: Installed, timestamp: NA, retries remaining: 44
+NdPollServicesStatus.commit: Waiting for operState timestamp. operState: None, deploymentState: Processing, installState: Installed, timestamp: NA, retries remaining: 43
+NdPollServicesStatus.commit: Waiting for operState timestamp. operState: None, deploymentState: Processing, installState: Installed, timestamp: NA, retries remaining: 42
+NdPollServicesStatus.commit: Waiting for operState timestamp. operState: None, deploymentState: Processing, installState: Installed, timestamp: NA, retries remaining: 41
+NdPollServicesStatus.commit: Waiting for operState timestamp. operState: None, deploymentState: Processing, installState: Installed, timestamp: NA, retries remaining: 40
+NdPollServicesStatus.commit: Waiting for services to become healthy. operState: Healthy, deploymentState: Processing, installState: Installed, timestamp: 2025-10-19T03:45:46Z, retries remaining: 39
+NdPollServicesStatus.commit: Waiting for services to become healthy. operState: Healthy, deploymentState: Processing, installState: Installed, timestamp: 2025-10-19T03:45:46Z, retries remaining: 38
+NdPollServicesStatus.commit: Waiting for services to become healthy. operState: Healthy, deploymentState: Processing, installState: Installed, timestamp: 2025-10-19T03:45:46Z, retries remaining: 37
+NdPollServicesStatus.commit: Services are healthy. operState: Healthy, deploymentState: Enabled, installState: Installed, timestamp: 2025-10-19T03:45:46Z, retries remaining: 36
+(nd-bootstrap) arobel@Allen-M4 nd-bootstrap %
+```
+
 ### Example output, with polling enabled, after bootstrap is complete and all services are up/healthy
 
 The following is to show that you can run the script against a fully booted Nexus Dashboard instance with no ill effects.

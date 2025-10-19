@@ -88,8 +88,7 @@ class NdPollBootstrapStatus:
         except requests.RequestException:
             # Handle network/connection errors
             msg = f"{self.class_name}.{method_name}: "
-            msg += "Encountered expected network error during bootstrap which can be ignored.\n"
-            msg += "You may see this message for approximately two minutes during bootstrap.\n"
+            msg += "Ignoring recoverable and temporary network error. You may see this message multiple times."
             print(msg)
             return self._last_overall_progress
 
