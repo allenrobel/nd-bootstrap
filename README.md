@@ -5,6 +5,9 @@ Bootstrap a Nexus Dashboard cluster.
 ## Features
 
 - Supports both IPv4 and IPv6 connectivity to Nexus Dashboard
+- Verified to work with Nexus Dashboard versions
+  - 3.2(2)m
+  - 4.1(1)g
 - Uses environment variables for Nexus Dashboard connection and authentication
   - More secure than hardcoding credentials in the configuration file
   - Easier to integrate with CI/CD pipelines and secret management systems
