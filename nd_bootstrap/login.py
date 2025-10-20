@@ -33,6 +33,11 @@ class NdLogin:
     ```python
     nd_login = NdLogin()
     nd_login.commit()
+    if nd_login.status:
+        print("Login successful")
+    else:
+        print("Login failed")
+        exit(1)
     session = nd_login.session
     ```
 
@@ -40,11 +45,11 @@ class NdLogin:
 
     def __init__(self) -> None:
         self.class_name: str = self.__class__.__name__
-        self._status = False  # True if logged in, False otherwise
+        self._status: bool = False  # True if successful login, False otherwise
         self._session = requests.Session()
         self._session.verify = False
         self._session.headers.update({"Content-Type": "application/json"})
-        self.nd_environment = NdEnvironment()
+        self.nd_environment: NdEnvironment = NdEnvironment()
         self._url: str = f"https://{self.nd_environment.nd_ip}/login"
 
         self._payload: dict[str, str] = {
@@ -55,8 +60,19 @@ class NdLogin:
 
     def commit(self) -> None:
         """
-        Login to Nexus Dashboard and, if successful, set the auth_token.
-        If not successful, sys_exit(1) with an error message.
+        # Summary
+
+        Login to Nexus Dashboard.
+
+        ## On successful login
+
+        - Set the auth_token header in the session
+        - Set status to True
+
+        ## On unsuccessful login
+
+        - Print an error message
+        - Set status to False
         """
         method_name: str = inspect.stack()[0][3]
         msg: str = ""
@@ -73,14 +89,13 @@ class NdLogin:
     @property
     def session(self) -> requests.Session:
         """
-        getter: return the requests.Session object.
-        setter: set and validate the requests.Session object.
+        - getter: return the requests.Session object.
         """
         return self._session
 
     @property
     def status(self) -> bool:
         """
-        getter: return the login status.
+        - getter: return the login status.
         """
         return self._status
