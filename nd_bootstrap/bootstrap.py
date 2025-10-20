@@ -15,7 +15,7 @@ from nd_bootstrap.environment import NdEnvironment
 from nd_bootstrap.login import NdLogin
 from nd_bootstrap.ntp import NdNtpServersValidate
 from nd_bootstrap.poll_bootstrap_status import NdPollBootstrapStatus
-from nd_bootstrap.poll_services_status import NdPollServicesStatus
+from nd_bootstrap.poll_install_status import NdPollInstallStatus
 
 
 class NdBootstrap:
@@ -239,11 +239,11 @@ class NdBootstrap:
             nd_bootstrap_status.interval = self.interval
             nd_bootstrap_status.commit()
 
-            nd_services_status = NdPollServicesStatus()
-            nd_services_status.session = self.session
-            nd_services_status.retries = self.retries
-            nd_services_status.interval = self.interval
-            nd_services_status.commit()
+            nd_install_status = NdPollInstallStatus()
+            nd_install_status.session = self.session
+            nd_install_status.retries = self.retries
+            nd_install_status.interval = self.interval
+            nd_install_status.commit()
 
     @property
     def config_file(self) -> str:

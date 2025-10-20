@@ -1,8 +1,10 @@
 """
-Nexus Dashboard Bootstrap Status Polling
+Nexus Dashboard Install Status Polling
 
-Polls cluster bootstrap installation status.
+Polls cluster install status.
 """
+
+# pylint: disable=broad-exception-caught
 
 import inspect
 import re
@@ -15,18 +17,18 @@ from nd_bootstrap.environment import NdEnvironment
 from nd_bootstrap.login import NdLogin
 
 
-class NdPollBootstrapStatus:
+class NdPollInstallStatus:
     """
     # Summary
 
-    Poll cluster bootstrap status.
+    Poll cluster installation status.
 
-    - If NdPollBootstrapStatus.poll_once() is called, poll one time and return the overall progress percentage.
-    - If NdPollBootstrapStatus.commit() is called, poll until response.overallProgress == 100, or retries are exhausted.
+    - If NdPollInstallStatus.poll_once() is called, poll one time and return the overall progress percentage.
+    - If NdPollInstallStatus.commit() is called, poll until response.overallProgress == 100, or retries are exhausted.
 
     ## Endpoint
 
-    Path: /clusterstatus/bootstrap
+    Path: /clusterstatus/install
     Verb: GET
 
     ## Properties
@@ -40,7 +42,7 @@ class NdPollBootstrapStatus:
     ### Poll once
 
     ```python
-    instance = NdPollBootstrapStatus()
+    instance = NdPollInstallStatus()
     instance.session = requests.Session()
     overall_progress = instance.poll_once()
     ```
@@ -48,7 +50,7 @@ class NdPollBootstrapStatus:
     ### Poll until overallProgress == 100, or retries are exhausted
 
     ```python
-    instance = NdPollBootstrapStatus()
+    instance = NdPollInstallStatus()
     instance.session = requests.Session()
     instance.retries = 50
     instance.interval = 20
@@ -61,12 +63,54 @@ class NdPollBootstrapStatus:
         self.class_name: str = self.__class__.__name__
         self._interval: int = 10
         self._retries: int = 10
+        self._login_attempt_retries: int = 10
         self._last_overall_progress: int = 0
         self._last_overall_status: str = "Unknown"
         self._last_state: str = "Unknown"
         self._session: requests.Session
         self.nd_environment = NdEnvironment()
-        self._url: str = f"https://{self.nd_environment.nd_ip}/clusterstatus/bootstrap"
+        self._url: str = f"https://{self.nd_environment.nd_ip}/clusterstatus/install"
+
+    def login_refresh(self) -> None:
+        """
+        Refresh the login session.
+
+        Exits if:
+            - Unable to re-authenticate after self._login_attempt_retries attempts
+        """
+        method_name = inspect.stack()[0][3]
+
+        msg = f"{self.class_name}.{method_name}: "
+        msg += "Refreshing login. You may see this message multiple times during install polling."
+        print(msg)
+
+        nd_login = NdLogin()
+        login_counter = 0
+        msg = f"{self.class_name}.{method_name}: "
+        msg += "Sleeping 10 seconds before attempting re-authentication."
+        print(msg)
+        sleep(10)
+        while nd_login.status is False and login_counter < self._login_attempt_retries:
+            login_counter += 1
+            try:
+                nd_login.commit()
+            except Exception as error:
+                msg = f"{self.class_name}.{method_name}: "
+                if "refused" in str(error):
+                    msg += "Connection refused. Retrying login refresh."
+                else:
+                    msg += f"Retrying login refresh due to exception: {error}"
+                print(msg)
+            sleep(10)
+        if nd_login.status is False:
+            msg = f"{self.class_name}.{method_name}: "
+            msg += "Exceeded maximum login attempts during install polling, exiting."
+            print(msg)
+            sys_exit(1)
+        self._session = nd_login.session
+        msg = f"{self.class_name}.{method_name}: "
+        msg += "Re-authentication successful."
+        print(msg)
 
     def poll_once(self) -> int:
         """
@@ -89,23 +133,20 @@ class NdPollBootstrapStatus:
         try:
             response = self._session.get(self._url)
         except requests.RequestException:
-            # Handle network/connection errors
-            msg = f"{self.class_name}.{method_name}: "
-            msg += "Ignoring recoverable and temporary network error. You may see this message multiple times."
-            print(msg)
+            # Attempt to handle network/connection errors
+            self.login_refresh()
+            return self._last_overall_progress
+
+        # print(f"{self.class_name}.{method_name}: response.status_code: {response.status_code}")
+        # print(f"{self.class_name}.{method_name}: response.text: {response.text}")
+
+        if response.status_code == 401:
+            self.login_refresh()
             return self._last_overall_progress
 
         if response.status_code == 404:
-            # Bootstrap will return 404 for a short time (about 20 seconds) after login completes
-            return self._last_overall_progress
-
-        if response.status_code == 401:
-            nd_login = NdLogin()
-            nd_login.commit()
-            self._session = nd_login.session
-            msg = f"{self.class_name}.{method_name}: "
-            msg += "Re-authenticated during bootstrap polling."
-            print(msg)
+            # install will return 404 for a short time (about 20 seconds) after login completes
+            # Verify this...
             return self._last_overall_progress
 
         if response.status_code != 200:
@@ -118,16 +159,16 @@ class NdPollBootstrapStatus:
         overall_status = response.json().get("overallStatus", "Unknown")
         state = response.json().get("state", "Unknown")
         msg = f"{self.class_name}.{method_name}: "
-        msg += f"Bootstrap status: retries: {self._retries}, state: {state}, overall_progress: {overall_progress}, overall_status: {overall_status}"
+        msg += f"Install status: retries {self._retries}, state: {state}, overall_progress: {overall_progress}, overall_status: {overall_status}"
         print(msg)
 
         self._last_overall_progress = overall_progress
         self._last_overall_status = overall_status
         self._last_state = state
-        # Exit if bootstrap failed
+        # Exit if install failed
         if re.search(r"fail", state, re.IGNORECASE):
             msg = f"{self.class_name}.{method_name}: "
-            msg += "Bootstrap encountered an error, exiting. "
+            msg += "Install encountered an error, exiting. "
             msg += f"overallProgress: {self._last_overall_progress}, "
             msg += f"overallStatus: {self._last_overall_status}, "
             msg += f"state: {self._last_state}"
@@ -139,7 +180,7 @@ class NdPollBootstrapStatus:
 
     def commit(self) -> None:
         """
-        Poll the bootstrap status until overallProgress == 100 and overallStatus indicates success.
+        Poll the install status until overallProgress == 100 and overallStatus indicates success.
 
         Exits if:
             - instance.session is not set
@@ -157,7 +198,7 @@ class NdPollBootstrapStatus:
             sys_exit(1)
 
         msg = f"{self.class_name}.{method_name}: "
-        msg += "Polling bootstrap status until complete. "
+        msg += "Polling install status until complete. "
         msg += f"Max retries: {self._retries}, interval: {self._interval} seconds."
         print(msg)
 
@@ -172,7 +213,7 @@ class NdPollBootstrapStatus:
             overall_progress = self.poll_once()
 
             if overall_progress == 100:
-                print(f"{self.class_name}.{method_name}: Bootstrap complete.")
+                print(f"{self.class_name}.{method_name}: Install complete.")
                 return
 
             sleep(self._interval)
