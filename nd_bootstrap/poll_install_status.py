@@ -67,7 +67,7 @@ class NdPollInstallStatus:
         self._last_overall_progress: int = 0
         self._last_overall_status: str = "Unknown"
         self._last_state: str = "Unknown"
-        self._session: requests.Session = None
+        self._session: requests.Session | None = None
         self.nd_environment = NdEnvironment()
         self._url: str = f"https://{self.nd_environment.nd_ip}/clusterstatus/install"
 
@@ -124,7 +124,7 @@ class NdPollInstallStatus:
         method_name: str = inspect.stack()[0][3]
         msg: str = ""
 
-        if not self._session:
+        if self._session is None:
             msg = f"{self.class_name}.{method_name}: "
             msg += "instance.session must be set before calling instance.poll_once, exiting."
             print(msg)
@@ -191,7 +191,7 @@ class NdPollInstallStatus:
         method_name: str = inspect.stack()[0][3]
         msg: str = ""
 
-        if not self._session:
+        if self._session is None:
             msg = f"{self.class_name}.{method_name}: "
             msg += "instance.session must be set before calling instance.commit, exiting."
             print(msg)
@@ -219,7 +219,7 @@ class NdPollInstallStatus:
             sleep(self._interval)
 
     @property
-    def session(self) -> requests.Session:
+    def session(self) -> requests.Session | None:
         """
         getter: return the authentication cookie dictionary.
         setter: set and validate the authentication cookie dictionary.
