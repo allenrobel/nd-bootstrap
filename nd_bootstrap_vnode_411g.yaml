@@ -1,0 +1,49 @@
+---
+clusterConfig:
+  ntpConfig:
+    servers:
+      - host: 192.168.7.6
+        prefer: true
+  name: ND411g-2
+  deploymentScaleProfile: {}
+  persona: LAN
+  searchDomains:
+    - arobel.com
+  ignoreHosts:
+    - localhost
+  nameServers:
+    - 192.168.7.1
+  proxyServers: []
+  appNetwork: 172.17.0.1/16
+  serviceNetwork: 100.80.0.0/16
+  externalServices:
+    - target: Management
+      pool:
+        - 192.168.7.50
+        - 192.168.7.51
+        - 192.168.7.52
+    - target: Data
+      pool:
+        - 192.168.12.50
+        - 192.168.12.51
+        - 192.168.12.52
+  deploymentMode: ndfc
+nodes:
+  - hostName: ND14-3-1
+    clusterLeader: false
+    role: Master
+    self: true
+    dataNetwork:
+      ipSubnet: 192.168.12.14/24
+      gateway: 192.168.12.1
+      ipv6Subnet: ""
+      gatewayv6: ""
+    managementNetwork:
+      ipSubnet: 192.168.7.14/24
+      gateway: 192.168.7.1
+      ipv6Subnet: ""
+      gatewayv6: ""
+    bgpConfig: {}
+    nodeController:
+      id: vnode
+      loginUser: rescue-user

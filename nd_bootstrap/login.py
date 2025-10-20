@@ -5,7 +5,6 @@ Handles authentication to Nexus Dashboard and maintains the session.
 """
 
 import inspect
-from sys import exit as sys_exit
 
 import requests
 import urllib3
@@ -41,6 +40,7 @@ class NdLogin:
 
     def __init__(self) -> None:
         self.class_name: str = self.__class__.__name__
+        self._status = False  # True if logged in, False otherwise
         self._session = requests.Session()
         self._session.verify = False
         self._session.headers.update({"Content-Type": "application/json"})
@@ -66,7 +66,9 @@ class NdLogin:
             msg = f"{self.class_name}.{method_name}: "
             msg += f"Authentication failed: {response.status_code} : {response.text}"
             print(msg)
-            sys_exit(1)
+            self._status = False
+        else:
+            self._status = True
 
     @property
     def session(self) -> requests.Session:
@@ -75,3 +77,10 @@ class NdLogin:
         setter: set and validate the requests.Session object.
         """
         return self._session
+
+    @property
+    def status(self) -> bool:
+        """
+        getter: return the login status.
+        """
+        return self._status
