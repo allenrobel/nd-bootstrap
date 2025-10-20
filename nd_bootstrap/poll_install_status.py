@@ -67,7 +67,7 @@ class NdPollInstallStatus:
         self._last_overall_progress: int = 0
         self._last_overall_status: str = "Unknown"
         self._last_state: str = "Unknown"
-        self._session: requests.Session
+        self._session: requests.Session = None
         self.nd_environment = NdEnvironment()
         self._url: str = f"https://{self.nd_environment.nd_ip}/clusterstatus/install"
 
