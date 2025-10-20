@@ -75,7 +75,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--retries",
         type=int,
-        default=10,
+        default=100,
         help="Number of retries for polling the status (bootstrap and services). Ignored if --poll-status is not set or --dry-run is set",
     )
     parser.add_argument(
