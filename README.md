@@ -69,9 +69,53 @@ VMmare ESXi once these have been tested.
 
 ### 2. Separately, perform initial manual CLI-based Nexus Dashboard setup
 
-- Set the password
+- Set and confirm the admin password
 - Set the IPv4 address with mask e.g. 192.168.7.14/24
 - Set the gateway e.g. 192.168.7.1
+- Set whether the node is cluster leader
+
+This will look similar to the below.
+
+```text
+<skip stuff>
+
+Press any key to run first-boot setup on this console...
+
+Starting Nexus Dashboard setup utility
+Welcome to Nexus Dashboard 3.2.2m
+Press Enter to manually bootstrap your node...
+Admin Password: ****
+Reenter Admin Password: ****
+Management Network:
+  IP Address/Mask: 192.168.7.14/24
+  Gateway: 192.168.7.1
+Is Cluster Leader? Note: only one node in the cluster must be leader. (Y/n): y
+
+Please review the config
+Cluster Leader: true
+Management Network:
+  Gateway: 192.168.7.1
+  IP Address/Mask: 192.168.7.14/24
+
+Re-enter config?(y/N): n
+
+System configured successfully
+
+<skip stuff>
+
+System initialized successfully
+Please wait for system to boot : [########################################] 100%
+System up, please wait for UI to be online.
+
+System UI online, please login to https://192.168.7.14 to continue.
+
+
+
+
+Ubuntu 22.04.4 LTS localhost ttyS0
+
+localhost login:
+```
 
 ### 3. Set the environment variables used by this script as shown below
 
