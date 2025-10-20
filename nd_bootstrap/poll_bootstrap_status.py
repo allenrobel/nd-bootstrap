@@ -74,6 +74,7 @@ class NdPollBootstrapStatus:
 
         Exits if:
             - instance.session is not set
+            - instance.state indicates failure
         Returns:
             overall_progress: int: The overall progress percentage.
         """
@@ -134,12 +135,12 @@ class NdPollBootstrapStatus:
             print(msg)
             sys_exit(1)
         # While self._last_overall_progress will be 100% for failures, we exit above on failure.
-        # Hence, self._last_overall_progress will reflect actual progress toward success
+        # Hence, self._last_overall_progress will reflect actual progress toward success.
         return self._last_overall_progress
 
     def commit(self) -> None:
         """
-        Poll the bootstrap status until overallProgress == 100 and overallStatus indicates success.
+        Poll the bootstrap status until overallProgress == 100.
 
         Exits if:
             - instance.session is not set
