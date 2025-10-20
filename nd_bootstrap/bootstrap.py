@@ -33,7 +33,7 @@ class NdBootstrap:
         self._dry_run: bool = False
         self._headers: dict[str, str] = {"Content-Type": "application/json"}
         self._interval: int = 10
-        self._retries: int = 10
+        self._retries: int = 100
         self._poll: bool = True  # Whether to poll the bootstrap status after posting the configuration
         self.nd_bootstrap_config = NdBootstrapConfig()
         self.nd_environment = NdEnvironment()
