@@ -85,7 +85,7 @@ Nexus Dashboard bootstrap currently supports IPv4 only.
 export ND_DOMAIN=local
 # optional preferred IP protocol, defaults to IP4
 export ND_IP_PROTOCOL=IP4
-export ND_IP4=192.168.1.14
+export ND_IP4=192.168.7.14
 # optional, (mandatory if ND_IP_PROTOCOL is set to IP6)
 export ND_IP6=2001:db8::1
 export ND_PASSWORD=MyPassword
