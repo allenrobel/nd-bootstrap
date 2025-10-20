@@ -67,7 +67,8 @@ class NdLogin:
             msg += f"Authentication failed: {response.status_code} : {response.text}"
             print(msg)
             self._status = False
-        self._status = True
+        else:
+            self._status = True
 
     @property
     def session(self) -> requests.Session:
