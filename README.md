@@ -63,10 +63,9 @@ uv sync
 uv sync --extra dev
 ```
 
-Note, both of the example configuration files (322m for ND 3.2(2)m and 411g for ND4.1(1)g)
-are tailored to Nexus Dashboard running under KVM (aka vNd/KVM).  We will include example
-configuration files for physical Nexus Dashboard appliances (pNd) and vNd running under
-VMmare ESXi once these have been tested.
+Note, the example configuration files are tailored to Nexus Dashboard running under KVM (aka vNd/KVM).
+We will include example configuration files for physical Nexus Dashboard appliances (pNd) and vNd running
+under VMmare ESXi once these have been tested.
 
 ### 2. Separately, perform initial manual CLI-based Nexus Dashboard setup
 
