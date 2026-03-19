@@ -4,7 +4,7 @@ clusterConfig:
     servers:
       - host: 192.168.7.6
         prefer: true
-  name: ND411g-2
+  name: ND-4-2-1-10-n2
   deploymentScaleProfile: {}
   persona: LAN
   searchDomains:
@@ -19,27 +19,27 @@ clusterConfig:
   externalServices:
     - target: Management
       pool:
-        - 192.168.7.50
-        - 192.168.7.51
-        - 192.168.7.52
+        - 192.168.7.60
+        - 192.168.7.61
+        - 192.168.7.62
     - target: Data
       pool:
-        - 192.168.12.50
-        - 192.168.12.51
-        - 192.168.12.52
+        - 192.168.14.50
+        - 192.168.14.51
+        - 192.168.14.52
   deploymentMode: ndfc
 nodes:
-  - hostName: ND14-3-1
-    clusterLeader: false
+  - hostName: ND-4-2-1-10-n2
+    clusterLeader: true
     role: Master
     self: true
     dataNetwork:
-      ipSubnet: 192.168.12.14/24
-      gateway: 192.168.12.1
+      ipSubnet: 192.168.14.14/24
+      gateway: 192.168.14.1
       ipv6Subnet: ""
       gatewayv6: ""
     managementNetwork:
-      ipSubnet: 192.168.7.14/24
+      ipSubnet: 192.168.7.8/24
       gateway: 192.168.7.1
       ipv6Subnet: ""
       gatewayv6: ""

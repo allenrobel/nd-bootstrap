@@ -16,6 +16,8 @@ from nd_bootstrap.login import NdLogin
 from nd_bootstrap.ntp import NdNtpServersValidate
 from nd_bootstrap.poll_bootstrap_status import NdPollBootstrapStatus
 from nd_bootstrap.poll_install_status import NdPollInstallStatus
+from nd_bootstrap.remote_services import NdVerifyRemoteServices
+from nd_bootstrap.version import NdVersion
 
 
 class NdBootstrap:
@@ -37,7 +39,6 @@ class NdBootstrap:
         self._poll: bool = True  # Whether to poll the bootstrap status after posting the configuration
         self.nd_bootstrap_config = NdBootstrapConfig()
         self.nd_environment = NdEnvironment()
-        self.ntp_servers_validate = NdNtpServersValidate()
         self._nd_login = NdLogin()
         self._nd_login.commit()
         self.session = self._nd_login.session
@@ -80,6 +81,10 @@ class NdBootstrap:
 
         data = response.json()
         nodes_info = data.get("nodes", [])
+        msg = f"{self.class_name}.{method_name}: "
+        msg += f"Retrieved {len(nodes_info)} nodes from Nexus Dashboard for serial number update."
+        msg += f"{json.dumps(nodes_info, indent=2)}"
+        print(msg)
         if not nodes_info:
             msg = f"{self.class_name}.{method_name}: "
             msg += "No nodes found in the response."
@@ -225,9 +230,20 @@ class NdBootstrap:
         print(msg)
         self.update_node_serial_numbers()
 
-        self.ntp_servers_validate.session = self.session
-        self.ntp_servers_validate.config = self._config
-        self.ntp_servers_validate.commit()
+        # Detect ND firmware version
+        nd_version = NdVersion()
+        nd_version.session = self.session
+        nd_version.commit()
+
+        # Choose validation based on version
+        if nd_version.firmware_version in ["4.2.1.4", "4.2.1.10"]:
+            validate: NdVerifyRemoteServices | NdNtpServersValidate = NdVerifyRemoteServices()
+        else:
+            validate = NdNtpServersValidate()
+
+        validate.session = self.session
+        validate.config = self._config
+        validate.commit()
 
         # POST the Bootstrap JSON
         self.send_bootstrap_configuration()

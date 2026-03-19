@@ -11,6 +11,8 @@ from nd_bootstrap.login import NdLogin
 from nd_bootstrap.ntp import NdNtpServersValidate
 from nd_bootstrap.poll_bootstrap_status import NdPollBootstrapStatus
 from nd_bootstrap.poll_install_status import NdPollInstallStatus
+from nd_bootstrap.remote_services import NdVerifyRemoteServices
+from nd_bootstrap.version import NdVersion
 
 __all__ = [
     "NdBootstrap",
@@ -20,6 +22,8 @@ __all__ = [
     "NdNtpServersValidate",
     "NdPollBootstrapStatus",
     "NdPollInstallStatus",
+    "NdVerifyRemoteServices",
+    "NdVersion",
 ]
 
 __version__ = "1.0.0"
