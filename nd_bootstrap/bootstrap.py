@@ -139,6 +139,20 @@ class NdBootstrap:
                 if node["nodeController"]["loginPassword"] == "ND_PASSWORD":
                     node["nodeController"]["loginPassword"] = self.nd_environment.nd_password
 
+    def update_node_controller_ip(self) -> None:
+        """
+        For each node with a nodeController, set nodeController.ipAddress from
+        managementNetwork.ipSubnet (stripping the prefix length) if not already set.
+        """
+        for node in self._config.get("nodes", []):
+            if "nodeController" not in node:
+                continue
+            if node["nodeController"].get("ipAddress"):
+                continue
+            mgmt_ip_subnet = node.get("managementNetwork", {}).get("ipSubnet", "")
+            if mgmt_ip_subnet:
+                node["nodeController"]["ipAddress"] = mgmt_ip_subnet.split("/")[0]
+
     def send_bootstrap_configuration(self) -> None:
         """
         # Summary
@@ -223,6 +237,7 @@ class NdBootstrap:
         self._config = self.nd_bootstrap_config.config
 
         self.update_node_credentials()
+        self.update_node_controller_ip()
 
         msg = f"{self.class_name}.{method_name}: "
         msg += f"Bootstrapping cluster '{self.nd_bootstrap_config.nd_cluster_name}' "
