@@ -16,8 +16,10 @@ Bootstrap a Nexus Dashboard Node.
 - Loads and validates a YAML configuration file
   - Separation of config from code
   - Create unique config file for each Nexus Dashboard setup
-  - Example configuration files provided for ND versions 3.2(2)m and 4.1(1)g
-- Validates that NTP servers are reachable and compatible from Nexus Dashboard's perspective prior to POST
+  - Example configuration files provided for ND versions 3.2(2)m, 4.1(1)g, and 4.2.1
+- Validates remote services prior to POST
+  - ND 4.2+: validates both DNS and NTP servers via the combined `/bootstrap/verifyremoteservices` endpoint
+  - Earlier versions: validates NTP servers via `/v2/bootstrap/verifyntp`
 - Retrieves node credentials from environment variables and dynamically updates the node configurations prior to POST
   - More secure and flexible than hardcoding credentials in the configuration file
 - Retrieves node serial numbers from Nexus Dashboard and dynamically updates the node configurations prior to POST
