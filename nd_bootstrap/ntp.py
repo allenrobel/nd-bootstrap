@@ -97,11 +97,14 @@ class NdNtpServersValidate:
 
         result = set()
         for server in response.json():
-            #  response.json() -> [{"name":"192.168.7.6","error":"","info":"valid"}]
+            #  ND <= 4.2.x  -> [{"name":"192.168.7.6","error":"","info":"valid"}]
+            #  ND 4.3.1.75  -> [{"name":"192.168.7.6","error":"","info":"Valid"}]
+            #  The "info" value was lower-case "valid" in earlier releases and is
+            #  capitalized "Valid" in 4.3.1.75, so compare case-insensitively.
             name = server.get("name", "") or "UNKNOWN"
             error = server.get("error", "") or "NONE"
             info = server.get("info", "")
-            if error != "NONE" or info != "valid":
+            if error != "NONE" or info.lower() != "valid":
                 result.add((name, error, info))
         if not result:
             msg = f"{self.class_name}.{method_name}: "

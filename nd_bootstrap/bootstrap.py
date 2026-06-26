@@ -212,6 +212,40 @@ class NdBootstrap:
         msg += f"Failed to bootstrap cluster. Status code: {response.status_code} : {response.text}"
         print(msg)
 
+    def select_validator(self, firmware_version: str) -> "NdVerifyRemoteServices | NdNtpServersValidate":
+        """
+        Return the pre-flight validation instance appropriate for the detected ND firmware version.
+
+        Version-specific pre-flight validation:
+
+        - ND 4.2(1) builds 4.2.1.4 / 4.2.1.10 use the combined remote-services endpoint
+          (/bootstrap/verifyremoteservices), which validates DNS and NTP together.
+        - ND 4.3(1) (e.g. 4.3.1.75) uses the NTP verification endpoint
+          (/v2/bootstrap/verifyntp). Note: 4.3.1.75 reports info "Valid" (capitalized),
+          which NdNtpServersValidate handles case-insensitively.
+        - Any other / unrecognized version defaults to NTP verification, with a warning.
+        """
+        method_name: str = inspect.stack()[0][3]
+        msg: str = ""
+
+        remote_services_versions = ["4.2.1.4", "4.2.1.10"]
+        if firmware_version in remote_services_versions:
+            validator: NdVerifyRemoteServices | NdNtpServersValidate = NdVerifyRemoteServices()
+            msg = f"{self.class_name}.{method_name}: "
+            msg += f"ND {firmware_version}: using remote-services (DNS + NTP) pre-flight validation."
+            print(msg)
+        elif firmware_version.startswith("4.3."):
+            validator = NdNtpServersValidate()
+            msg = f"{self.class_name}.{method_name}: "
+            msg += f"ND {firmware_version}: using NTP pre-flight validation."
+            print(msg)
+        else:
+            validator = NdNtpServersValidate()
+            msg = f"{self.class_name}.{method_name}: "
+            msg += f"ND {firmware_version}: unrecognized version, defaulting to NTP pre-flight validation."
+            print(msg)
+        return validator
+
     def commit(self) -> None:
         """
         Commit the changes by loading the YAML config, updating node credentials, and
@@ -250,11 +284,8 @@ class NdBootstrap:
         nd_version.session = self.session
         nd_version.commit()
 
-        # Choose validation based on version
-        if nd_version.firmware_version in ["4.2.1.4", "4.2.1.10"]:
-            validate: NdVerifyRemoteServices | NdNtpServersValidate = NdVerifyRemoteServices()
-        else:
-            validate = NdNtpServersValidate()
+        # Choose pre-flight validation based on the detected firmware version
+        validate = self.select_validator(nd_version.firmware_version)
 
         validate.session = self.session
         validate.config = self._config
