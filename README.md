@@ -59,6 +59,7 @@ It's highly recommended to use a virtual environment, per below.
 ```bash
 cd $HOME/repos/nd-bootstrap
 python3 -m venv .venv --prompt nd-bootstrap
+source ./venv/bin/activate
 pip install uv
 uv sync
 # For development
