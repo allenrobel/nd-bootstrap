@@ -19,14 +19,14 @@ clusterConfig:
   externalServices:
     - target: Management
       pool:
-        - 192.168.7.50
-        - 192.168.7.51
-        - 192.168.7.52
+        - 192.168.7.230
+        - 192.168.7.231
+        - 192.168.7.232
     - target: Data
       pool:
-        - 192.168.12.50
-        - 192.168.12.51
-        - 192.168.12.52
+        - 192.168.12.30
+        - 192.168.12.31
+        - 192.168.12.32
   deploymentMode: ndfc
 nodes:
   - hostName: ND-4-2-1-10-n1
