@@ -2,26 +2,26 @@
 clusterConfig:
   ntpConfig:
     servers:
-      - host: 10.10.20.7
+      - host: 192.168.7.6
         prefer: true
-  name: ND-4-2-1-10-n1
+  name: ND42-1-4-n1
   deploymentScaleProfile: {}
   persona: LAN
-#  searchDomains:
-#    - laukapu.com
+  searchDomains:
+    - arobel.com
   ignoreHosts:
     - localhost
   nameServers:
-    - 10.10.0.1
+    - 192.168.7.1
   proxyServers: []
   appNetwork: 172.17.0.1/16
   serviceNetwork: 100.80.0.0/16
   externalServices:
     - target: Data
       pool:
-        - 192.168.12.20
-        - 192.168.12.21
-        - 192.168.12.22
+        - 192.168.12.10
+        - 192.168.12.11
+        - 192.168.12.12
     - target: Management
       pool:
         - 10.10.20.60
@@ -29,7 +29,7 @@ clusterConfig:
         - 10.10.20.62
   deploymentMode: ndfc
 nodes:
-  - hostName: ND-4-2-1-10-n1
+  - hostName: ND42-1-4-n1
     clusterLeader: true
     role: Master
     self: true
